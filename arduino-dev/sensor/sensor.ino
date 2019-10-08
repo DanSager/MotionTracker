@@ -1,5 +1,5 @@
 int led = 13;
-int sensor = 2;
+int sensor = 53;
 int state = LOW;
 int val = 0;
 int count = 0;
