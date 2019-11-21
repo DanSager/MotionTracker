@@ -16,6 +16,7 @@ int d1 = 13;// thousand's 7 segment display
 long n = 0;// n represents the value displayed on the LED display. For example, when n=0, 0000 is displayed. The maximum value is 9999. 
 int x = 100;
 int del = 5;//Set del as 5; the value is the degree of fine tuning for the clock
+int limit = 10000;
 //int count = 0;//Set count=0. Here count is a count value that increases by 1 every 0.1 second, which means 1 second is counted when the value is 10
 
 //motion sensor
@@ -58,6 +59,8 @@ void setup()
 void loop()
 {
   scan();
+  if (n > limit)
+    Serial.println("ERROR: Limit exceeded!");
   
   clearLEDs();//clear the 7-segment display screen
   pickDigit(0);//Light up 7-segment display d1
@@ -88,6 +91,9 @@ void scan()
     revwipe(5);
     n=0;
   }
+
+  if (n >= limit)
+     n = 0;
   
   detect = digitalRead(sensor);
   if (detect == HIGH) {
@@ -97,9 +103,8 @@ void scan()
       Serial.println("Motion detected!");
       Serial.print(n);
       Serial.println(" -> Number of times motion was detected");
-      if (n == 10000)
-        n = 0;
     }
+    
   }
   else {
     if (prev == HIGH) {
