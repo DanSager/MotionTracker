@@ -18,15 +18,32 @@
         android:text="@string/connect" />
 
     <Button
-        android:id="@+id/on"
+        android:id="@+id/increment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/plus" />
+        android:text="@string/increment"
+        android:visibility="invisible" />
 
     <Button
-        android:id="@+id/off"
+        android:id="@+id/decrement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/minus" />
+        android:text="@string/decrement"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reset"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/display_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/count"
+        android:visibility="invisible" />
 
 </LinearLayout>

@@ -29,6 +29,14 @@ int reset = 14; //pin of the button on the breadboard
 int buttonState = 0; //wheither or not the button is pressed
 int wipeDelay = 0; //breaks up the wipe so it doesn't go as quickly
 
+//bluetooth
+String incoming_string = "";
+char cha;
+int index = 0;
+boolean flag = false;
+char data[10];
+int rotate = 0;
+
 void setup()
 {
   //set all the pins of the LED display as output
@@ -59,6 +67,7 @@ void setup()
 void loop()
 {
   scan();
+  bluetooth();
   if (n > limit)
     Serial.println("ERROR: Limit exceeded!");
   
@@ -84,7 +93,7 @@ void loop()
 }
 /*******************************************/
 void scan()
-{
+{ 
   // put your main code here, to run repeatedly:
   buttonState = digitalRead(reset);
   if (buttonState == LOW){
@@ -111,6 +120,49 @@ void scan()
       Serial.println("Motion stopped!");
       prev = LOW;
     }
+  }
+}
+/**************************************/ 
+void bluetooth()
+{
+  //To avoid sending to Bluetooth constantly
+  String sendStr = "count:" + String(n);
+  Serial.print(sendStr);
+  
+  if(Serial.available() > 0){ 
+    while(Serial.available() > 0){ 
+      cha = Serial.read();
+      //delay(10); //Delay required 
+      data[index] = cha;
+      index++; 
+    } 
+    data[index] = '\0'; 
+    flag = true;   
+  }  
+  if(flag){
+    handle_bt();
+    flag = false; 
+    index = 0; 
+    data[0] = '\0';
+  } 
+}
+/**************************************/ 
+void handle_bt()
+{
+  char command = data[0];
+  switch(command){
+    case 'i':
+      Serial.println("Command: increment");
+      n++;
+      break;
+    case 'd':
+      Serial.println("Command: decrement");
+      n--;
+      break;
+    case 'r':
+      Serial.println("Command: reset");
+      n = 0;
+      break;
   }
 }
 /**************************************/ 

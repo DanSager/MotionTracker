@@ -15,17 +15,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     BluetoothSPP bt;
-    final String ON = "1";
-    final String OFF = "0";
-    final String RESET = "RESET";
+    final String INCREMENT = "i"; // i is short for increment
+    final String DECREMENT = "d"; // d is short for decrement
+    final String RESET = "r"; // r is short for reset
 
     Button connect;
-    Button on;
-    Button off;
+    Button increment;
+    Button decrement;
+    Button reset;
+    TextView count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
         bt = new BluetoothSPP(this);
 
         connect = (Button) findViewById(R.id.connect);
-        on = (Button) findViewById(R.id.on);
-        off = (Button) findViewById(R.id.off);
+        increment = (Button) findViewById(R.id.increment);
+        decrement = (Button) findViewById(R.id.decrement);
+        reset = (Button) findViewById(R.id.reset);
+        count = (TextView) findViewById(R.id.display_count);
 
         if (!bt.isBluetoothAvailable()) {
             Toast.makeText(getApplicationContext(), "Bluetooth is not available", Toast.LENGTH_SHORT).show();
@@ -46,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
         bt.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() {
             public void onDeviceConnected(String name, String address) {
                 connect.setText("Connected to " + name);
+                increment.setVisibility(View.VISIBLE);
+                decrement.setVisibility(View.VISIBLE);
+                reset.setVisibility(View.VISIBLE);
+                count.setVisibility(View.VISIBLE);
             }
 
             public void onDeviceDisconnected() {
@@ -54,6 +63,24 @@ public class MainActivity extends AppCompatActivity {
 
             public void onDeviceConnectionFailed() {
                 connect.setText("Unable to connect");
+            }
+        });
+
+        bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener(){
+            public void onDataReceived(byte[] data, String message) {
+                if (message.contains("count:")) {
+                    message = message.substring(6);
+                    String s = "";
+                    for (int i = 0; i < message.length(); i++){
+                        char c = message.charAt(i);
+                        if (c >= 48 && c <=57) {
+                            s += c;
+                        } else {
+                            break;
+                        }
+                    }
+                    count.setText(s);
+                }
             }
         });
 
@@ -69,20 +96,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        on.setOnClickListener(new View.OnClickListener() {
+        increment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bt.send(ON, true);
+                bt.send(INCREMENT, true);
             }
         });
 
-        off.setOnClickListener(new View.OnClickListener() {
+        decrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bt.send(OFF, true);
+                bt.send(DECREMENT, true);
             }
         });
 
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bt.send(RESET, true);
+            }
+        });
     }
 
     public void onStart() {
