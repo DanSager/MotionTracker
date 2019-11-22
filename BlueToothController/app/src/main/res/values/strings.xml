@@ -4,5 +4,6 @@
     <string name="increment">Increment</string>
     <string name="decrement">Decrement</string>
     <string name="reset">Reset</string>
-    <string name="count">Default Count Text</string>
+    <string name="count">Times Triggered:</string>
+    <string name="number">Default Number</string>
 </resources>

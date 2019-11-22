@@ -1,17 +1,17 @@
 #include <TimerOne.h>
 //the pins of 4-digit 7-segment display attach to pin2-13 respectively 
-int a = 2;
-int b = 3;//         a
-int c = 4;//        ---
-int d = 5;//      f| g |b
-int e = 6;//        ---
-int f = 7;//      e|   |c
-int g = 8;//        ---
-int p = 9;//         d
-int d4 = 10;// one's 7 segment display
-int d3 = 11;// ten's 7 segment display
-int d2 = 12;// hundred's 7 segment display
-int d1 = 13;// thousand's 7 segment display
+int a = 36;
+int b = 37;//         a
+int c = 38;//        ---
+int d = 39;//      f| g |b
+int e = 40;//        ---
+int f = 41;//      e|   |c
+int g = 42;//        ---
+int p = 43;//         d
+int d4 = 35;// one's 7 segment display
+int d3 = 34;// ten's 7 segment display
+int d2 = 33;// hundred's 7 segment display
+int d1 = 32;// thousand's 7 segment display
 
 long n = 0;// n represents the value displayed on the LED display. For example, when n=0, 0000 is displayed. The maximum value is 9999. 
 int x = 100;
@@ -20,7 +20,7 @@ int limit = 10000;
 //int count = 0;//Set count=0. Here count is a count value that increases by 1 every 0.1 second, which means 1 second is counted when the value is 10
 
 //motion sensor
-int sensor = 16; //pin of motion sensor on arduino
+int sensor = 25; //pin of motion sensor on arduino
 int detect = LOW; //current state of motion sensor
 int prev = LOW; //previous state of motion sensor
 
@@ -69,7 +69,7 @@ void loop()
   scan();
   bluetooth();
   if (n > limit)
-    Serial.println("ERROR: Limit exceeded!");
+    //Serial.println("ERROR: Limit exceeded!");
   
   clearLEDs();//clear the 7-segment display screen
   pickDigit(0);//Light up 7-segment display d1
@@ -109,15 +109,14 @@ void scan()
     if (prev == LOW) {
       prev = HIGH;
       n = n+1;
-      Serial.println("Motion detected!");
-      Serial.print(n);
-      Serial.println(" -> Number of times motion was detected");
-    }
-    
+      //Serial.println("Motion detected!");
+      //Serial.print(n);
+      //Serial.println(" -> Number of times motion was detected");
+    }    
   }
   else {
     if (prev == HIGH) {
-      Serial.println("Motion stopped!");
+      //Serial.println("Motion stopped!");
       prev = LOW;
     }
   }
@@ -125,9 +124,9 @@ void scan()
 /**************************************/ 
 void bluetooth()
 {
-  //To avoid sending to Bluetooth constantly
+  //Send to bluetooth count
   String sendStr = "count:" + String(n);
-  Serial.print(sendStr);
+  Serial.println(sendStr);
   
   if(Serial.available() > 0){ 
     while(Serial.available() > 0){ 
@@ -152,15 +151,16 @@ void handle_bt()
   char command = data[0];
   switch(command){
     case 'i':
-      Serial.println("Command: increment");
+      //Serial.println("Command: increment");
       n++;
       break;
     case 'd':
-      Serial.println("Command: decrement");
+      //Serial.println("Command: decrement");
       n--;
       break;
     case 'r':
-      Serial.println("Command: reset");
+      //Serial.println("Command: reset");
+      revwipe(5);
       n = 0;
       break;
   }

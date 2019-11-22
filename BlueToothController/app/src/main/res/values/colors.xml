@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimaryDark">#005D57</color>
+    <color name="colorPrimary">#04B97F</color>
+    <color name="colorAccent">#37EFBA</color>
+
+    <color name="hintText">#808080</color>
+
+    <color name="background_light">#33333D</color>
+    <color name="background_medium">#26282F</color>
+    <color name="background_dark">#1d1e23</color>
+
+    <color name="popupone">#3F51B5</color>
+    <color name="popuptwo">#2f333f</color>
+    <color name="popupthree">#49acd5</color>
+    <color name="popupfour">#45bc62</color>
+    <color name="popupfive">#eaad43</color>
+    <color name="popupsix">#ff4081</color>
 </resources>

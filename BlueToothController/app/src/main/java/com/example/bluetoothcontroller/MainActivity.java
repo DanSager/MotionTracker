@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     Button decrement;
     Button reset;
     TextView count;
+    TextView number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         increment = (Button) findViewById(R.id.increment);
         decrement = (Button) findViewById(R.id.decrement);
         reset = (Button) findViewById(R.id.reset);
-        count = (TextView) findViewById(R.id.display_count);
+        count = (TextView) findViewById(R.id.count);
+        number = (TextView) findViewById(R.id.number);
 
         if (!bt.isBluetoothAvailable()) {
             Toast.makeText(getApplicationContext(), "Bluetooth is not available", Toast.LENGTH_SHORT).show();
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 decrement.setVisibility(View.VISIBLE);
                 reset.setVisibility(View.VISIBLE);
                 count.setVisibility(View.VISIBLE);
+                number.setVisibility(View.VISIBLE);
             }
 
             public void onDeviceDisconnected() {
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         }
                     }
-                    count.setText(s);
+                    number.setText(s);
                 }
             }
         });
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(getApplicationContext(), DeviceList.class);
                     startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
+                    connect.setText("Connecting...");
                 }
             }
         });
